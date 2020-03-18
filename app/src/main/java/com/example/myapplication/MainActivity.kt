@@ -19,35 +19,33 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        lifecycleScope.launch{
-            setList()
-            withContext(Dispatchers.IO){
-                rawData = ArrayList()
-                rawData.addAll(XmlParse().setXmlPullParser())
-//                XmlParse().getMetaProps(data)
-            }
-            for (i in 0 until rawData.size){
-                withContext(Dispatchers.IO){
-                    XmlParse().getMetaProps(rawData[i])
-                }
-                data.add(rawData[i])
-                adapter.notifyDataSetChanged()
-            }
-            
-            println("finishfinishfinishfinish")
-        }
+        setList()
+        refreshList()
     }
 
-    fun setList(){
+    private fun setList(){
         data = ArrayList()
         adapter = NewsImgTextAdapter(this, data)
         val lm = LinearLayoutManager(this@MainActivity)
         news_list.layoutManager = lm
         news_list.setHasFixedSize(true)
+        news_list.setItemViewCacheSize(50)
         news_list.adapter = adapter
     }
 
-    fun refresh(){
-        adapter.notifyDataSetChanged()
+    private fun refreshList(){
+        lifecycleScope.launch{
+            withContext(Dispatchers.IO){
+                rawData = ArrayList()
+                rawData.addAll(XmlParse().setXmlPullParser())
+            }
+            for (i in 0 until rawData.size){
+                withContext(Dispatchers.IO){
+                    XmlParse().getMetaProps(rawData[i])
+                    data.add(rawData[i])
+                }
+                adapter.notifyItemInserted(i)
+            }
+        }
     }
 }

@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="160dp"
-    android:padding="10dp">
+    android:layout_height="130dp"
+    android:background="#ffffff"
+    android:layout_margin="5dp"
+    android:padding="10dp"
+    android:elevation="5dp">
 
     <ImageView
         android:id="@+id/thumbnail"
-        android:layout_width="150dp"
+        android:layout_width="125dp"
         android:layout_height="match_parent"
         android:layout_marginEnd="10dp"
         android:fitsSystemWindows="true" />
@@ -14,17 +17,69 @@
     <TextView
         android:id="@+id/list_title"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginBottom="10dp"
+        android:layout_height="25dp"
+        android:layout_marginBottom="5dp"
         android:textStyle="bold"
-        android:layout_toEndOf="@id/thumbnail" />
+        android:layout_toEndOf="@id/thumbnail"
+        android:textSize="18sp"
+        android:ellipsize="end"
+        android:maxLines="1"/>
 
     <TextView
         android:id="@+id/list_desc"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginBottom="10dp"
+        android:layout_height="45dp"
+        android:layout_marginBottom="5dp"
         android:layout_toEndOf="@id/thumbnail"
-        android:layout_below="@id/list_title"/>
+        android:layout_below="@id/list_title"
+        android:textSize="15sp"
+        android:ellipsize="end"
+        android:maxLines="2"/>
+
+<!--    <TextView-->
+<!--        android:id="@+id/keyword1"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="25dp"-->
+<!--        android:layout_toEndOf="@id/thumbnail"-->
+<!--        android:layout_below="@id/list_desc"-->
+<!--        android:background="@drawable/border_keyword"-->
+<!--        android:gravity="center_vertical|center_horizontal"-->
+<!--        android:layout_marginEnd="5dp"-->
+<!--        android:paddingStart="8dp"-->
+<!--        android:paddingEnd="8dp"-->
+<!--        android:textSize="12sp"/>-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/keyword2"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="25dp"-->
+<!--        android:layout_toEndOf="@id/keyword1"-->
+<!--        android:layout_below="@id/list_desc"-->
+<!--        android:background="@drawable/border_keyword"-->
+<!--        android:gravity="center_vertical|center_horizontal"-->
+<!--        android:layout_marginEnd="5dp"-->
+<!--        android:paddingStart="8dp"-->
+<!--        android:paddingEnd="8dp"-->
+<!--        android:textSize="12sp"/>-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/keyword3"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="25dp"-->
+<!--        android:layout_toEndOf="@id/keyword2"-->
+<!--        android:layout_below="@id/list_desc"-->
+<!--        android:background="@drawable/border_keyword"-->
+<!--        android:gravity="center_vertical|center_horizontal"-->
+<!--        android:layout_marginEnd="5dp"-->
+<!--        android:paddingStart="8dp"-->
+<!--        android:paddingEnd="8dp"-->
+<!--        android:textSize="12sp"/>-->
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/keyword_list"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:layout_toEndOf="@id/thumbnail"
+        android:layout_below="@id/list_desc"/>
 
 </RelativeLayout>

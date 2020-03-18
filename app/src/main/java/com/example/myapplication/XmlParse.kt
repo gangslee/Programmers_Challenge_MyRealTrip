@@ -21,8 +21,6 @@ class XmlParse {
             parser.setInput(inputStream, null)
 
             sampleDatas = parseXml(parser)
-            println("assssssssssssssssss")
-
         } catch (e: XmlPullParserException) {
             e.printStackTrace()
         } catch (e: IOException) {
@@ -39,7 +37,6 @@ class XmlParse {
         var data: SampleData? = null
 
         while (eventType != XmlPullParser.END_DOCUMENT) {
-            println("cccccccccccc")
             val name: String
             when (eventType) {
                 XmlPullParser.START_TAG -> {
@@ -73,42 +70,48 @@ class XmlParse {
                         val tag = ogTags[index]
                         when (tag.attr("property")) {
                             "og:image" -> data.imgLink = tag.attr("content")
-                            "og:description" -> data.desc = tag.attr("content")
+                            "og:description" -> {
+                                data.desc = tag.attr("content")
+                                data.wordList = getMostKeyword(data.desc as String)
+                            }
                         }
                     }
             }
-            data.wordList = getMostKeyword(data.desc)
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
 
+    private val match = Regex("[^\uAC00-\uD7A3xfe0-9a-zA-Z\\s]")
 
     private fun getMostKeyword(desc: String): ArrayList<Keyword> {
-        val match = Regex("[^\uAC00-\uD7A3xfe0-9a-zA-Z\\s]")
-        val st = StringTokenizer(desc, " ")
-        var wordList: ArrayList<Keyword> = ArrayList()
+        val str = match.replace(desc," ")
+        val st = StringTokenizer(str, " ")
+        val wordList: ArrayList<Keyword> = ArrayList()
         var wordData: Keyword?
 
         while (st.hasMoreTokens()) {
-            val word = match.replace(st.nextToken(), "")
-            var addAble = true
-            for (i in 0 until wordList.size) {
-                if (word == wordList[i].word) {
-                    wordList[i].cnt += 1
-                    addAble = false
-                    break
+            val word = st.nextToken()
+            if (word.length>1 && !word.contains(" ", true) && !word.contains("\n", true)) {
+                var addAble = true
+                for (i in 0 until wordList.size) {
+                    if (word == wordList[i].word) {
+                        wordList[i].cnt += 1
+                        addAble = false
+                        break
+                    }
                 }
-            }
-            if (addAble) {
-                wordData = Keyword()
-                wordData.word = word
-                wordList.add(wordData)
+                if (addAble) {
+                    wordData = Keyword()
+                    wordData.word = word
+                    wordList.add(wordData)
+                }
             }
         }
         Collections.sort(wordList, WordCompare())
         return if (wordList.size > 3) {
             wordList.dropLast(wordList.size - 3) as ArrayList<Keyword>
+
         } else {
             wordList
         }
