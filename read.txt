@@ -1,1 +1,2 @@
 jsoup : https://jsoup.org/
+glide : https://github.com/bumptech/glide

@@ -5,7 +5,7 @@ class SampleData {
     lateinit var link : String
     var imgLink : String = ""
     var desc : String = ""
-    lateinit var wordList : ArrayList<Keyword>
+    var wordList : ArrayList<Keyword> = ArrayList()
 }
 
 class Keyword{
