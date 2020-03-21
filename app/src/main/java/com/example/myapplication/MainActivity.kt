@@ -19,13 +19,18 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        setList()
-        refreshList()
+        setView()
+        updateList()
     }
 
-    private fun setList(){
+    private fun setView(){
         data = ArrayList()
         adapter = NewsImgTextAdapter(this, data)
+
+        swipe_layout.setOnRefreshListener {
+            updateList()
+        }
+
         val lm = LinearLayoutManager(this@MainActivity)
         news_list.layoutManager = lm
         news_list.setHasFixedSize(true)
@@ -33,19 +38,27 @@ class MainActivity : AppCompatActivity() {
         news_list.adapter = adapter
     }
 
-    private fun refreshList(){
-        lifecycleScope.launch{
-            withContext(Dispatchers.IO){
+    private fun updateList(){
+        data.clear()
+        adapter.notifyDataSetChanged()
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
                 rawData = ArrayList()
                 rawData.addAll(XmlParse().setXmlPullParser())
             }
-            for (i in 0 until rawData.size){
-                withContext(Dispatchers.IO){
+
+            for (i in 0 until rawData.size) {
+                withContext(Dispatchers.IO) {
                     XmlParse().getMetaProps(rawData[i])
                     data.add(rawData[i])
                 }
                 adapter.notifyItemInserted(i)
             }
+
+            if(swipe_layout.isRefreshing ) {
+                swipe_layout.isRefreshing = false
+            }
+            println("completecompletecomplete")
         }
     }
 }
