@@ -4,6 +4,8 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'kotlin-kapt'
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
@@ -33,11 +35,14 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'com.google.android.material:material:1.1.0'
-    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
 
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.3.0-alpha01"
-    implementation 'org.jsoup:jsoup:1.11.1'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.0-alpha01'
+
+    implementation 'org.jsoup:jsoup:1.11.1'     // using JSOUP
 
     implementation 'com.github.bumptech.glide:glide:4.11.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'//glide
+    kapt 'com.github.bumptech.glide:compiler:4.11.0'// using glide
+
+    implementation "com.github.myrealtrip:nasca:1.0.0"
 }

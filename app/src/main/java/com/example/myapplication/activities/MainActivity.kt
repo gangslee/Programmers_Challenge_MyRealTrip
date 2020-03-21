@@ -1,10 +1,14 @@
-package com.example.myapplication
+package com.example.myapplication.activities
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.myapplication.parsing.HtmlParse
+import com.example.myapplication.parsing.XmlParse
+import com.example.myapplication.R
 import com.example.myapplication.adapters.NewsImgTextAdapter
+import com.example.myapplication.classes.SampleData
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -49,7 +53,7 @@ class MainActivity : AppCompatActivity() {
 
             for (i in 0 until rawData.size) {
                 withContext(Dispatchers.IO) {
-                    XmlParse().getMetaProps(rawData[i])
+                    HtmlParse().getMetaProps(rawData[i])
                     data.add(rawData[i])
                 }
                 adapter.notifyItemInserted(i)

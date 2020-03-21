@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.Keyword
+import com.example.myapplication.classes.Keyword
 import com.example.myapplication.R
 
 class KeywordAdapter(private val context: Context, data : ArrayList<Keyword>):
