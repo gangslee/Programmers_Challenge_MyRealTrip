@@ -1,5 +1,6 @@
 package com.example.myapplication.activities
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -9,6 +10,7 @@ import com.example.myapplication.parsing.XmlParse
 import com.example.myapplication.R
 import com.example.myapplication.adapters.NewsImgTextAdapter
 import com.example.myapplication.classes.SampleData
+import com.example.myapplication.classes.XmlData
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -16,7 +18,7 @@ import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
     private lateinit var data : ArrayList<SampleData>
-    private lateinit var rawData : ArrayList<SampleData>
+    private lateinit var xmlData : ArrayList<XmlData>
     private lateinit var adapter : NewsImgTextAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,18 +30,36 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setView(){
-        data = ArrayList()
-        adapter = NewsImgTextAdapter(this, data)
-
+        setRecylerView()
         swipe_layout.setOnRefreshListener {
             updateList()
         }
+    }
 
+    private fun setRecylerView(){
         val lm = LinearLayoutManager(this@MainActivity)
         news_list.layoutManager = lm
         news_list.setHasFixedSize(true)
         news_list.setItemViewCacheSize(50)
+
+        data = ArrayList()
+        adapter = NewsImgTextAdapter(this, data)
+        adapter.newsClick = object : NewsImgTextAdapter.NewsClick{
+            override fun onClick(position: Int) {
+                makeIntent(position)
+            }
+
+        }
         news_list.adapter = adapter
+    }
+
+    private fun makeIntent(n : Int){
+        val intentDetail = Intent(applicationContext, DetailActivity::class.java)
+        intentDetail.putExtra("titleAndLink", xmlData[n])
+        if(data[n].wordList != null) {
+            intentDetail.putExtra("wordList", data[n].wordList)
+        }
+        startActivity(intentDetail)
     }
 
     private fun updateList(){
@@ -47,14 +67,12 @@ class MainActivity : AppCompatActivity() {
         adapter.notifyDataSetChanged()
         lifecycleScope.launch {
             withContext(Dispatchers.IO) {
-                rawData = ArrayList()
-                rawData.addAll(XmlParse().setXmlPullParser())
+                xmlData = XmlParse().setXmlPullParser()
             }
 
-            for (i in 0 until rawData.size) {
+            for (i in 0 until xmlData.size) {
                 withContext(Dispatchers.IO) {
-                    HtmlParse().getMetaProps(rawData[i])
-                    data.add(rawData[i])
+                    data.add(HtmlParse().getMetaProps(xmlData[i]))
                 }
                 adapter.notifyItemInserted(i)
             }
@@ -62,7 +80,7 @@ class MainActivity : AppCompatActivity() {
             if(swipe_layout.isRefreshing ) {
                 swipe_layout.isRefreshing = false
             }
-            println("completecompletecomplete")
+            println("completecompletecomplete  ${data.size}")
         }
     }
 }

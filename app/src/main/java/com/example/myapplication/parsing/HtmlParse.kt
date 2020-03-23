@@ -3,12 +3,14 @@ package com.example.myapplication.parsing
 import com.example.myapplication.classes.Keyword
 import com.example.myapplication.classes.SampleData
 import com.example.myapplication.classes.WordCompare
+import com.example.myapplication.classes.XmlData
 import org.jsoup.Jsoup
 import java.util.*
 import kotlin.collections.ArrayList
 
 class HtmlParse {
-    fun getMetaProps(data: SampleData) {
+    fun getMetaProps(data: XmlData) : SampleData{
+        val result = SampleData(data)
         try {
             val doc = Jsoup.connect(data.link).get()
             val ogTags = doc.select("meta[property^=og:]")
@@ -17,17 +19,19 @@ class HtmlParse {
                     ogTags.forEachIndexed { index, _ ->
                         val tag = ogTags[index]
                         when (tag.attr("property")) {
-                            "og:image" -> data.imgLink = tag.attr("content")
+                            "og:image" -> result.imgLink = tag.attr("content")
                             "og:description" -> {
-                                data.desc = tag.attr("content")
-                                data.wordList = getMostKeyword(data.desc as String)
+                                result.desc = tag.attr("content")
+                                result.wordList = getMostKeyword(result.desc as String)
                             }
                         }
                     }
             }
+
         } catch (e: Exception) {
             e.printStackTrace()
         }
+        return result
     }
 
     private val match = Regex("[^\uAC00-\uD7A3xfe0-9a-zA-Z\\s]")

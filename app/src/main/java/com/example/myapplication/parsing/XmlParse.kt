@@ -1,6 +1,6 @@
 package com.example.myapplication.parsing
 
-import com.example.myapplication.classes.SampleData
+import com.example.myapplication.classes.XmlData
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
 import org.xmlpull.v1.XmlPullParserFactory
@@ -9,9 +9,9 @@ import java.net.URL
 import kotlin.collections.ArrayList
 
 class XmlParse {
-    fun setXmlPullParser(): ArrayList<SampleData> {
+    fun setXmlPullParser(): ArrayList<XmlData> {
         val pullParserFactory: XmlPullParserFactory
-        lateinit var sampleDatas: ArrayList<SampleData>
+        lateinit var xmlDatas: ArrayList<XmlData>
         try {
             pullParserFactory = XmlPullParserFactory.newInstance()
             val parser = pullParserFactory.newPullParser()
@@ -19,21 +19,21 @@ class XmlParse {
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false)
             parser.setInput(inputStream, null)
 
-            sampleDatas = parseXml(parser)
+            xmlDatas = parseXml(parser)
         } catch (e: XmlPullParserException) {
             e.printStackTrace()
         } catch (e: IOException) {
             e.printStackTrace()
         }
-        return sampleDatas
+        return xmlDatas
     }
 
     //    Parse XML & Set Data List
     @Throws(XmlPullParserException::class, IOException::class)
-    fun parseXml(parser: XmlPullParser): ArrayList<SampleData> {
-        val datas: ArrayList<SampleData> = ArrayList()
+    fun parseXml(parser: XmlPullParser): ArrayList<XmlData> {
+        val datas: ArrayList<XmlData> = ArrayList()
         var eventType = parser.eventType
-        var data: SampleData? = null
+        var data: XmlData? = null
 
         while (eventType != XmlPullParser.END_DOCUMENT) {
             val name: String
@@ -41,11 +41,11 @@ class XmlParse {
                 XmlPullParser.START_TAG -> {
                     name = parser.name
                     if (name == "item") {
-                        data = SampleData()
+                        data = XmlData()
                     } else if (data != null) {
                         if (name == "title") {
                             data.title = parser.nextText()
-                        } else if (name == "link") {
+                        } else if (name == "link" && data.title!=null) {
                             val link = parser.nextText()
                             data.link = link
 //                            getMetaProps(link, data)

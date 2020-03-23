@@ -25,6 +25,11 @@ class NewsImgTextAdapter(private val context: Context, data : ArrayList<SampleDa
     private val newsData = data
     private lateinit var keywordAdapter : KeywordAdapter
 
+    interface NewsClick{
+        fun onClick(position: Int)
+    }
+    var newsClick : NewsClick? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListItemViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.news_adpter, parent, false)
         return ListItemViewHolder(view)
@@ -64,6 +69,11 @@ class NewsImgTextAdapter(private val context: Context, data : ArrayList<SampleDa
         } else{
             holder.desc?.setText(R.string.desc_default)
             holder.list?.visibility = View.GONE
+        }
+        if(newsClick != null){
+            holder.itemView.setOnClickListener {
+                newsClick?.onClick(position)
+            }
         }
     }
 
