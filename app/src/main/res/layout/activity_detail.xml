@@ -6,18 +6,35 @@
     android:layout_height="match_parent"
     tools:context=".activities.DetailActivity">
 
-    <TextView
-        android:id="@+id/detail_title"
+    <LinearLayout
+        android:id="@+id/elevation_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:textStyle="bold"/>
+        android:background="@color/colorPrimary"
+        android:padding="10dp"
+        android:orientation="vertical">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/detail_keyword_list"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_marginBottom="5dp"/>
+
+        <TextView
+            android:id="@+id/detail_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"/>
+
+    </LinearLayout>
 
     <com.mrt.nasca.NascaView
         android:id="@+id/nasca"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/detail_title"
+        android:layout_below="@id/elevation_layout"
         app:nasca_zoomable="true" />
 
 </RelativeLayout>

@@ -1,4 +1,6 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">티딩</string>
+    <string name="MainTitle">오늘의 티딩</string>
     <string name="desc_default">미리보기 내용이 없습니다.</string>
+    <string name="hashtag">#</string>
 </resources>

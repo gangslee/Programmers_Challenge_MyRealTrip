@@ -2,16 +2,21 @@ package com.example.myapplication.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.lifecycle.lifecycleScope
+import android.view.View
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
+import com.example.myapplication.adapters.KeywordAdapter
 import com.example.myapplication.classes.Keyword
 import com.example.myapplication.classes.XmlData
 import com.mrt.nasca.NascaViewListener
 import kotlinx.android.synthetic.main.activity_detail.*
+import kotlinx.android.synthetic.main.activity_main.*
 
 class DetailActivity : AppCompatActivity() {
     private var titleAndLink : XmlData? = null
     private var wordList : ArrayList<Keyword>? = null
+    private lateinit var adapter : KeywordAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
@@ -24,11 +29,15 @@ class DetailActivity : AppCompatActivity() {
         titleAndLink = intent.getParcelableExtra("titleAndLink")
         if(intent.hasExtra("wordList")){
             wordList = intent.getParcelableArrayListExtra("wordList")
+            setRecyclerView()
+        } else{
+            detail_keyword_list.visibility = View.GONE
         }
     }
 
     private fun setView(){
         detail_title.text = titleAndLink?.title
+
         nasca.apply {
             loadUrl(titleAndLink?.link)
             listener = object : NascaViewListener() {
@@ -39,5 +48,16 @@ class DetailActivity : AppCompatActivity() {
 
             }
         }
+    }
+
+    private fun setRecyclerView(){
+        val lm = LinearLayoutManager(this@DetailActivity)
+        lm.orientation =LinearLayoutManager.HORIZONTAL
+        detail_keyword_list.layoutManager = lm
+        detail_keyword_list.setHasFixedSize(true)
+        detail_keyword_list.setItemViewCacheSize(50)
+
+        adapter = KeywordAdapter(this, wordList as ArrayList<Keyword>, false)
+        detail_keyword_list.adapter = adapter
     }
 }

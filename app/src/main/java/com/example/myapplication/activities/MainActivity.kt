@@ -30,13 +30,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setView(){
-        setRecylerView()
+        setRecyclerView()
         swipe_layout.setOnRefreshListener {
             updateList()
         }
     }
 
-    private fun setRecylerView(){
+    private fun setRecyclerView(){
         val lm = LinearLayoutManager(this@MainActivity)
         news_list.layoutManager = lm
         news_list.setHasFixedSize(true)

@@ -12,7 +12,7 @@ class HtmlParse {
     fun getMetaProps(data: XmlData) : SampleData{
         val result = SampleData(data)
         try {
-            val doc = Jsoup.connect(data.link).get()
+            val doc = Jsoup.connect(data.link).referrer("http://www.google.com").get()
             val ogTags = doc.select("meta[property^=og:]")
             when {
                 ogTags.size > 0 ->
@@ -69,6 +69,5 @@ class HtmlParse {
         } else {
             wordList
         }
-
     }
 }

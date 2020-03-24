@@ -9,11 +9,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
-import com.example.myapplication.classes.Keyword
 import com.example.myapplication.classes.SampleData
 
 import com.bumptech.glide.annotation.GlideModule
 import com.bumptech.glide.module.AppGlideModule
+import com.example.myapplication.classes.Keyword
 
 
 @GlideModule
@@ -63,7 +63,7 @@ class NewsImgTextAdapter(private val context: Context, data : ArrayList<SampleDa
                 lm.orientation =LinearLayoutManager.HORIZONTAL
                 holder.list?.layoutManager = lm
                 holder.list?.setHasFixedSize(true)
-                keywordAdapter = KeywordAdapter(context, newsData[position].wordList as ArrayList<Keyword>)
+                keywordAdapter = KeywordAdapter(context, newsData[position].wordList as ArrayList<Keyword>, true)
                 holder.list?.adapter = keywordAdapter
             }
         } else{

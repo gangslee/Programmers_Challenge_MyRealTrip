@@ -36,45 +36,6 @@
         android:ellipsize="end"
         android:maxLines="2"/>
 
-<!--    <TextView-->
-<!--        android:id="@+id/keyword1"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="25dp"-->
-<!--        android:layout_toEndOf="@id/thumbnail"-->
-<!--        android:layout_below="@id/list_desc"-->
-<!--        android:background="@drawable/border_keyword"-->
-<!--        android:gravity="center_vertical|center_horizontal"-->
-<!--        android:layout_marginEnd="5dp"-->
-<!--        android:paddingStart="8dp"-->
-<!--        android:paddingEnd="8dp"-->
-<!--        android:textSize="12sp"/>-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/keyword2"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="25dp"-->
-<!--        android:layout_toEndOf="@id/keyword1"-->
-<!--        android:layout_below="@id/list_desc"-->
-<!--        android:background="@drawable/border_keyword"-->
-<!--        android:gravity="center_vertical|center_horizontal"-->
-<!--        android:layout_marginEnd="5dp"-->
-<!--        android:paddingStart="8dp"-->
-<!--        android:paddingEnd="8dp"-->
-<!--        android:textSize="12sp"/>-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/keyword3"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="25dp"-->
-<!--        android:layout_toEndOf="@id/keyword2"-->
-<!--        android:layout_below="@id/list_desc"-->
-<!--        android:background="@drawable/border_keyword"-->
-<!--        android:gravity="center_vertical|center_horizontal"-->
-<!--        android:layout_marginEnd="5dp"-->
-<!--        android:paddingStart="8dp"-->
-<!--        android:paddingEnd="8dp"-->
-<!--        android:textSize="12sp"/>-->
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/keyword_list"
         android:layout_width="match_parent"
