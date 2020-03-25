@@ -12,14 +12,13 @@ import com.example.myapplication.adapters.NewsImgTextAdapter
 import com.example.myapplication.classes.SampleData
 import com.example.myapplication.classes.XmlData
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var data : ArrayList<SampleData>
-    private lateinit var xmlData : ArrayList<XmlData>
-    private lateinit var adapter : NewsImgTextAdapter
+    private lateinit var data: ArrayList<SampleData>
+    private lateinit var parsedData: ArrayList<SampleData>
+    private lateinit var xmlData: ArrayList<XmlData>
+    private lateinit var adapter: NewsImgTextAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,14 +28,14 @@ class MainActivity : AppCompatActivity() {
         updateList()
     }
 
-    private fun setView(){
+    private fun setView() {
         setRecyclerView()
         swipe_layout.setOnRefreshListener {
             updateList()
         }
     }
 
-    private fun setRecyclerView(){
+    private fun setRecyclerView() {
         val lm = LinearLayoutManager(this@MainActivity)
         news_list.layoutManager = lm
         news_list.setHasFixedSize(true)
@@ -44,43 +43,59 @@ class MainActivity : AppCompatActivity() {
 
         data = ArrayList()
         adapter = NewsImgTextAdapter(this, data)
-        adapter.newsClick = object : NewsImgTextAdapter.NewsClick{
+        adapter.newsClick = object : NewsImgTextAdapter.NewsClick {
             override fun onClick(position: Int) {
                 makeIntent(position)
             }
-
         }
         news_list.adapter = adapter
     }
 
-    private fun makeIntent(n : Int){
+    private fun makeIntent(n: Int) {
         val intentDetail = Intent(applicationContext, DetailActivity::class.java)
-        intentDetail.putExtra("titleAndLink", xmlData[n])
-        if(data[n].wordList != null) {
+        intentDetail.putExtra("title", data[n].title)
+        intentDetail.putExtra("link", data[n].link)
+        if (data[n].wordList != null) {
             intentDetail.putExtra("wordList", data[n].wordList)
         }
         startActivity(intentDetail)
     }
 
-    private fun updateList(){
+    private fun updateList() {
+        parsedData = ArrayList()
         data.clear()
         adapter.notifyDataSetChanged()
-        lifecycleScope.launch {
-            withContext(Dispatchers.IO) {
-                xmlData = XmlParse().setXmlPullParser()
-            }
 
-            for (i in 0 until xmlData.size) {
+        runBlocking {
+            lifecycleScope.launch {
                 withContext(Dispatchers.IO) {
-                    data.add(HtmlParse().getMetaProps(xmlData[i]))
+                    xmlData = XmlParse().setXmlPullParser()
                 }
-                adapter.notifyItemInserted(i)
-            }
+                    val job = startParse()
+                    job.forEach {
+                        it.join()
+                        adapter.notifyDataSetChanged()
+                    }
 
-            if(swipe_layout.isRefreshing ) {
-                swipe_layout.isRefreshing = false
+                if (swipe_layout.isRefreshing) {
+                    swipe_layout.isRefreshing = false
+                }
+                data.addAll(parsedData)
+                adapter.notifyDataSetChanged()
             }
-            println("completecompletecomplete  ${data.size}")
         }
+
+    }
+
+    fun startParse(): ArrayList<Job> {
+        val job = arrayListOf<Job>()
+        for (i in 0 until xmlData.size) {
+            job += lifecycleScope.launch {
+                withContext(Dispatchers.IO) {
+                    parsedData.add(HtmlParse().getMetaProps(xmlData[i]))
+                }
+            }
+        }
+        return job
     }
 }

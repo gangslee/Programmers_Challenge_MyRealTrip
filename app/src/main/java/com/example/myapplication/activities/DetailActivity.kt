@@ -13,7 +13,8 @@ import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.activity_main.*
 
 class DetailActivity : AppCompatActivity() {
-    private var titleAndLink : XmlData? = null
+    private var title : String? = null
+    private var link : String? = null
     private var wordList : ArrayList<Keyword>? = null
     private lateinit var adapter : KeywordAdapter
 
@@ -26,7 +27,8 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun chkIntent(){
-        titleAndLink = intent.getParcelableExtra("titleAndLink")
+        title = intent.getStringExtra("title")
+        link = intent.getStringExtra("link")
         if(intent.hasExtra("wordList")){
             wordList = intent.getParcelableArrayListExtra("wordList")
             setRecyclerView()
@@ -36,10 +38,10 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun setView(){
-        detail_title.text = titleAndLink?.title
+        detail_title.text = title
 
         nasca.apply {
-            loadUrl(titleAndLink?.link)
+            loadUrl(link)
             listener = object : NascaViewListener() {
                 override fun onProgressChanged(progress: Int) {
                     super.onProgressChanged(progress)

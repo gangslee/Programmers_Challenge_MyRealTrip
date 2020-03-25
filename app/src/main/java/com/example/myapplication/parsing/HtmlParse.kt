@@ -12,8 +12,8 @@ class HtmlParse {
     fun getMetaProps(data: XmlData) : SampleData{
         val result = SampleData(data)
         try {
-            val doc = Jsoup.connect(data.link).referrer("http://www.google.com").get()
-            val ogTags = doc.select("meta[property^=og:]")
+            val doc = Jsoup.connect(data.link).execute()
+            val ogTags = doc.parse().select("meta[property^=og:]")
             when {
                 ogTags.size > 0 ->
                     ogTags.forEachIndexed { index, _ ->
@@ -34,17 +34,20 @@ class HtmlParse {
         return result
     }
 
-    private val match = Regex("[^\uAC00-\uD7A3xfe0-9a-zA-Z\\s]")
+    private val specialChars = Regex("[^\uAC00-\uD7A3xfe0-9a-zA-Z\\s]")
+    private val escapeChars = Regex("[\n\t\b\r]")
 
     private fun getMostKeyword(desc: String): ArrayList<Keyword> {
-        val str = match.replace(desc," ")
-        val st = StringTokenizer(str, " ")
+        val str = escapeChars.replace(specialChars.replace(desc," "), "")
+//        str = escapeChars.replace(str,"")
+        val st = StringTokenizer(str,
+            " ")
         val wordList: ArrayList<Keyword> = ArrayList()
         var wordData: Keyword?
 
         while (st.hasMoreTokens()) {
             val word = st.nextToken()
-            if (word.length>1 && !word.contains(" ", true) && !word.contains("\n", true)) {
+            if (word.length>1 && !word.contains(" ", true) && !word.contains("\n", true) ) {
                 var addAble = true
                 for (i in 0 until wordList.size) {
                     if (word == wordList[i].word) {
