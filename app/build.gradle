@@ -44,5 +44,5 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     kapt 'com.github.bumptech.glide:compiler:4.11.0'// using glide
 
-    implementation "com.github.myrealtrip:nasca:1.0.0"
+    implementation "com.github.myrealtrip:nasca:1.0.0" // using nasca
 }

@@ -2,3 +2,6 @@ jsoup : https://jsoup.org/
 glide : https://github.com/bumptech/glide
 
 마이리얼트립 아이콘 : https://programmers.co.kr/job_positions/1713
+main_icon : https://www.flaticon.com/
+left_icon : https://www.flaticon.com/
+right_icon : https://www.flaticon.com/

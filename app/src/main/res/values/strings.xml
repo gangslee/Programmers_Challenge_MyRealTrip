@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">티딩</string>
+    <string name="label_first">최신 뉴스가 티딩!!</string>
+    <string name="label_second">뉴스의 키워드들이 티딩!!</string>
+    <string name="label_third">뉴스를 클릭하여 원문을 볼 수 있어요!!</string>
+    <string name="version">v\t</string>
     <string name="MainTitle">오늘의 티딩</string>
     <string name="desc_default">미리보기 내용이 없습니다.</string>
     <string name="hashtag">#</string>
