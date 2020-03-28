@@ -3,33 +3,9 @@ package com.example.myapplication.classes
 import android.os.Parcel
 import android.os.Parcelable
 
-class XmlData() :Parcelable{
+class XmlData{
     var title : String? = null
     var link: String? = null
-
-    constructor(parcel: Parcel) : this() {
-        title = parcel.readString()
-        link = parcel.readString()
-    }
-
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(title)
-        parcel.writeString(link)
-    }
-
-    override fun describeContents(): Int {
-        return 0
-    }
-
-    companion object CREATOR : Parcelable.Creator<XmlData> {
-        override fun createFromParcel(parcel: Parcel): XmlData {
-            return XmlData(parcel)
-        }
-
-        override fun newArray(size: Int): Array<XmlData?> {
-            return arrayOfNulls(size)
-        }
-    }
 }
 
 class SampleData(titleAndLink : XmlData){

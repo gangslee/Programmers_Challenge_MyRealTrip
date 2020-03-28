@@ -5,18 +5,14 @@ import android.content.pm.PackageInfo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import com.bumptech.glide.Glide
-import com.bumptech.glide.annotation.GlideModule
-import com.bumptech.glide.module.AppGlideModule
 import com.example.myapplication.R
-import com.example.myapplication.adapters.GlideApp
 import kotlinx.android.synthetic.main.activity_intro.*
 
 class IntroActivity : AppCompatActivity() {
     private var delayHandler: Handler? = null
     private val SPLASH_TIME_OUT: Long = 1300
 
-    val runnable: Runnable = Runnable{
+    private val runnable: Runnable = Runnable{
         if(!isFinishing){
             val intent = Intent(applicationContext, MainActivity::class.java)
             startActivity(intent)
@@ -29,21 +25,24 @@ class IntroActivity : AppCompatActivity() {
         setContentView(R.layout.activity_intro)
 
         setVersionTxt()
-        delayHandler = Handler()
-        delayHandler?.postDelayed(runnable, SPLASH_TIME_OUT)
+        setHandler()
     }
 
     override fun onDestroy() {
+        super.onDestroy()
         if(delayHandler != null){
             delayHandler!!.removeCallbacks(runnable)
         }
-
-        super.onDestroy()
     }
 
-    fun setVersionTxt(){
+    private fun setVersionTxt(){
         val info : PackageInfo = this.packageManager.getPackageInfo(this.packageName, 0)
         val version = info.versionName
         intro_version.append(version)
+    }
+
+    private fun setHandler(){
+        delayHandler = Handler()
+        delayHandler?.postDelayed(runnable, SPLASH_TIME_OUT)
     }
 }

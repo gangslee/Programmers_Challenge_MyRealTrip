@@ -9,6 +9,7 @@ import java.net.URL
 import kotlin.collections.ArrayList
 
 class XmlParse {
+    // set XML parser
     fun setXmlPullParser(): ArrayList<XmlData> {
         val pullParserFactory: XmlPullParserFactory
         lateinit var xmlDatas: ArrayList<XmlData>
@@ -28,9 +29,9 @@ class XmlParse {
         return xmlDatas
     }
 
-    //    Parse XML & Set Data List
+    // Parse XML & Set Data List
     @Throws(XmlPullParserException::class, IOException::class)
-    fun parseXml(parser: XmlPullParser): ArrayList<XmlData> {
+    private fun parseXml(parser: XmlPullParser): ArrayList<XmlData> {
         val datas: ArrayList<XmlData> = ArrayList()
         var eventType = parser.eventType
         var data: XmlData? = null
@@ -45,10 +46,9 @@ class XmlParse {
                     } else if (data != null) {
                         if (name == "title") {
                             data.title = parser.nextText()
-                        } else if (name == "link" && data.title!=null) {
+                        } else if (name == "link" && data.title != null) {
                             val link = parser.nextText()
                             data.link = link
-//                            getMetaProps(link, data)
                             datas.add(data)
                         }
                     }
@@ -58,7 +58,5 @@ class XmlParse {
         }
         return datas
     }
-
-
 }
 

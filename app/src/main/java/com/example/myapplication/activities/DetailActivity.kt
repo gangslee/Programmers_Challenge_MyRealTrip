@@ -7,10 +7,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.adapters.KeywordAdapter
 import com.example.myapplication.classes.Keyword
-import com.example.myapplication.classes.XmlData
-import com.mrt.nasca.NascaViewListener
 import kotlinx.android.synthetic.main.activity_detail.*
-import kotlinx.android.synthetic.main.activity_main.*
+
 
 class DetailActivity : AppCompatActivity() {
     private var title : String? = null
@@ -39,17 +37,7 @@ class DetailActivity : AppCompatActivity() {
 
     private fun setView(){
         detail_title.text = title
-
-        nasca.apply {
-            loadUrl(link)
-            listener = object : NascaViewListener() {
-                override fun onProgressChanged(progress: Int) {
-                    super.onProgressChanged(progress)
-                    println("complete $progress")
-                }
-
-            }
-        }
+        nasca.loadUrl(link)
     }
 
     private fun setRecyclerView(){

@@ -9,10 +9,11 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class HtmlParse {
+    // get <meta og : > tag`s property
     fun getMetaProps(data: XmlData) : SampleData{
         val result = SampleData(data)
         try {
-            val doc = Jsoup.connect(data.link).execute()
+            val doc = Jsoup.connect(data.link).referrer("http://www.google.com").execute()
             val ogTags = doc.parse().select("meta[property^=og:]")
             when {
                 ogTags.size > 0 ->
@@ -34,12 +35,12 @@ class HtmlParse {
         return result
     }
 
-    private val specialChars = Regex("[^\uAC00-\uD7A3xfe0-9a-zA-Z\\s]")
-    private val escapeChars = Regex("[\n\t\b\r]")
 
+    // get keywords from og:description
     private fun getMostKeyword(desc: String): ArrayList<Keyword> {
+        val specialChars = Regex("[^\uAC00-\uD7A3xfe0-9a-zA-Z\\s]")
+        val escapeChars = Regex("[\n\t\b\r]")
         val str = escapeChars.replace(specialChars.replace(desc," "), "")
-//        str = escapeChars.replace(str,"")
         val st = StringTokenizer(str,
             " ")
         val wordList: ArrayList<Keyword> = ArrayList()

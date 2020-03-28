@@ -64,7 +64,6 @@ class MainActivity : AppCompatActivity() {
     private fun updateList() {
         parsedData = ArrayList()
         data.clear()
-        adapter.notifyDataSetChanged()
 
         runBlocking {
             lifecycleScope.launch {
@@ -87,7 +86,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun startParse(): ArrayList<Job> {
+    private fun startParse(): ArrayList<Job> {
         val job = arrayListOf<Job>()
         for (i in 0 until xmlData.size) {
             job += lifecycleScope.launch {
